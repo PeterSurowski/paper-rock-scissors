@@ -1,0 +1,11 @@
+.container {
+	display: none;
+}
+
+.input-group {
+	display: none;
+}
+
+#choose-screen {
+	display: block;
+}
