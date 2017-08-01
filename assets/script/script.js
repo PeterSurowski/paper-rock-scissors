@@ -14,6 +14,8 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Creating some vars and initial values.
+var player1data;
+var player2data;
 var player1Chosen = false;
 var player2Chosen = false;
 var userChoice;
@@ -26,7 +28,7 @@ var ties = 0;
 //If the other user chooses a player before you.
 database.ref().on('value', function(snapshot) {
   var sv = snapshot.val();
-  if (snapshot.child("player1Chosen").exists() && sv.player1Chosen === true) {
+  if (snapshot.child('player1Chosen').exists() && sv.player1Chosen === true) {
     $('.container, .input-group').show();
     $('#choose-screen').hide();
     $('#player-1-image').attr('src', 'assets/images/neighborhood-watch450X200.jpg');
@@ -51,14 +53,8 @@ $('#player-1').on('click', function() {
   $('.container, .input-group').show();
   $('#choose-screen').hide();
   $('#player-2-image').attr('src', 'assets/images/neighborhood-watch450X200.jpg');
-  database.ref().set({
-    player1Chosen: true
-  })
-  
-  //CONTINUE CODING HERE
-  database.ref().on('value', function(snapshot) {
-    var sv = snapshot.val();
-    
+  database.ref().child('player1data').set({
+    userChoice: ''
   });
 });
 
@@ -67,45 +63,72 @@ $('#player-2').on('click', function() {
   $('.container, .input-group').show();
   $('#choose-screen').hide();
   $('#player-1-image').attr('src', 'assets/images/neighborhood-watch450X200.jpg');
-  player2Chosen = true;
+  database.ref().child('player2data').set({
+    userChoice: ''
+  });
 });
 
-
-
-// If the user chooses paper...
-$('#paper').on('click', function() {
+// If player-1 chooses paper:
+$('#paper-1').on('click', function() {
   event.preventDefault();
   // Change the userChoice var in the database to "paper."
-  database.ref().set({
-    player1Chosen,
+  database.ref().child('player1data').set({
     userChoice: 'paper'
   });
   database.ref().on('value', function(snapshot) {
-    $('#user-output').text(snapshot.val().userChoice);
+    $('#user-output').text(snapshot.child('player1data').val().userChoice);
   });
 });
-
-$('#rock').on('click', function() {
+// If player-1 chooses rock:
+$('#rock-1').on('click', function() {
   event.preventDefault();
-  userChoice = 'rock';
-  database.ref().set({
-    player1Chosen,
+  database.ref().child('player1data').set({
     userChoice: 'rock'
   });
   database.ref().on('value', function(snapshot) {
     $('#user-output').text(snapshot.val().userChoice);
   });  
 });
-
-$('#scissors').on('click', function() {
+// If player-1 chooses scissors:
+$('#scissors-1').on('click', function() {
   event.preventDefault();
-  userChoice = 'scissors';
-  database.ref().set({
-    player1Chosen,
+  database.ref().child('player1data').set({
     userChoice: 'scissors'
   });
   database.ref().on('value', function(snapshot) {
     $('#user-output').text(snapshot.val().userChoice);
+  });
+});
+
+// If player-2 chooses paper:
+$('#paper-2').on('click', function() {
+  event.preventDefault();
+  // Change the userChoice var in the database to "paper."
+  database.ref().child('player2data').set({
+    userChoice: 'paper'
+  });
+  database.ref().on('value', function(snapshot) {
+    $('#opponent-output').text(snapshot.child('player2data').val().userChoice);
+  });
+});
+// If player-2 chooses rock:
+$('#rock-2').on('click', function() {
+  event.preventDefault();
+  database.ref().child('player2data').set({
+    userChoice: 'rock'
+  });
+  database.ref().on('value', function(snapshot) {
+    $('#opponent-output').text(snapshot.child('player2data').val().userChoice);
+  });  
+});
+// If player-2 chooses scissors:
+$('#scissors-2').on('click', function() {
+  event.preventDefault();
+  database.ref().child('player2data').set({
+    userChoice: 'scissors'
+  });
+  database.ref().on('value', function(snapshot) {
+    $('#opponent-output').text(snapshot.child('player2data').val().userChoice);
   });
 });
   
