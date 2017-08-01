@@ -36,7 +36,7 @@ database.ref().child('scores').set({
 database.ref().child('chat').set({
   chatOutput: chatOutput
 })
-
+/*
 //If the other user chooses a player before you.
 database.ref().on('value', function(snapshot) {
   var sv = snapshot.val();
@@ -58,7 +58,7 @@ database.ref().on('value', function(snapshot) {
     });
   } 
 });
-    
+    */
 
 //If the player chooses player 1...
 $('#player-1').on('click', function() {
@@ -143,26 +143,28 @@ $('#scissors-2').on('click', function() {
     $('#opponent-output').text(snapshot.child('player2data').val().userChoice);
   });
 });
-/*  
+  
 // Logic to determine a tie:
-if (database.ref().child('player1data').val().userChoice === 'paper' & snapshot.child('player2data').val().userChoice === 'paper') {
-    database.ref().child('ties').set({
-      ties: ties++
-    })
-    $('#ties').database.ref().child('ties').val();
-  }
-*/
+$('button').on('click', function() {
+  database.ref().on('value', function(snapshot) {
+    if (snapshot.child('player1data').val().userChoice === 'paper' && snapshot.child('player2data').val().userChoice === 'paper') {
+      database.ref().child('ties').set({
+        ties: ties++
+      })
+    $('#ties').text(snapshot.child('ties'));
+    };
+  });
+})
+
 
 // Logic for chat functionality:
 // When the send button is clicked...
 $('#send').on('click', function() {
-  alert('button is working')
   var chatInput = $('#chat-input').val();
-  alert(chatInput)
   database.ref().child('chat').set({
     chatOutput: chatInput
-  })
+  });
   database.ref().on('value', function(snapshot) {
     $('#chat-output').text(snapshot.child('chat').val().chatOutput);
-  })  
-})
+  });
+});
