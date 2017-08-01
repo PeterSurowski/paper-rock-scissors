@@ -82,17 +82,23 @@
 			<button type="button" class="btn btn-default" id="scissors-2">Scissors</button>
 		</div>
 	</div>
-	<div class="container col-md-12">
+	<div class="container col-md-6">
 		<div class="well well-lg">
-			<h3>Conversation</h3>
-			<div id="opponent-output"></div>
+			<p>Player 1 wins: <span id="player-1-wins"></span></p>
+			<p>Player 2 wins: <span id="player-2-wins"></span></p>
+			<p>Ties: <span id="ties"></span></p>
 		</div>
 	</div>
-	<div class="col-lg-12">
+	<div class="container col-md-6">
+		<div class="well well-lg">
+			<p id="chat-output">Conversation</p>
+		</div>
+	</div>
+	<div class="col-lg-6">
     	<div class="input-group">
-    		<input type="text" class="form-control" placeholder="Type comment here.">
+    		<input type="text" class="form-control" placeholder="Type comment here." id="chat-input">
     		<span class="input-group-btn">
-    			<button class="btn btn-default" type="button">Send</button>
+    			<button class="btn btn-default" type="button" id="send">Send</button>
     		</span>
     	</div>
 	</div>

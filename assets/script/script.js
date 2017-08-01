@@ -21,9 +21,21 @@ var player2Chosen = false;
 var userChoice;
 var opponentChoice;
 var userComments;
-var userWins = 0;
-var opponentWins = 0;
+var player1wins = 0;
+var player2wins = 0;
 var ties = 0;
+var chatOutput = '';
+
+// Print initial scores to scoreboard:
+database.ref().child('scores').set({
+  ties: ties,
+  player1wins: player1wins,
+  player2wins: player2wins
+});
+
+database.ref().child('chat').set({
+  chatOutput: chatOutput
+})
 
 //If the other user chooses a player before you.
 database.ref().on('value', function(snapshot) {
@@ -86,7 +98,7 @@ $('#rock-1').on('click', function() {
     userChoice: 'rock'
   });
   database.ref().on('value', function(snapshot) {
-    $('#user-output').text(snapshot.val().userChoice);
+    $('#user-output').text(snapshot.child('player1data').val().userChoice);
   });  
 });
 // If player-1 chooses scissors:
@@ -96,7 +108,7 @@ $('#scissors-1').on('click', function() {
     userChoice: 'scissors'
   });
   database.ref().on('value', function(snapshot) {
-    $('#user-output').text(snapshot.val().userChoice);
+    $('#user-output').text(snapshot.child('player1data').val().userChoice);
   });
 });
 
@@ -131,6 +143,26 @@ $('#scissors-2').on('click', function() {
     $('#opponent-output').text(snapshot.child('player2data').val().userChoice);
   });
 });
-  
+/*  
+// Logic to determine a tie:
+if (database.ref().child('player1data').val().userChoice === 'paper' & snapshot.child('player2data').val().userChoice === 'paper') {
+    database.ref().child('ties').set({
+      ties: ties++
+    })
+    $('#ties').database.ref().child('ties').val();
+  }
+*/
 
-   
+// Logic for chat functionality:
+// When the send button is clicked...
+$('#send').on('click', function() {
+  alert('button is working')
+  var chatInput = $('#chat-input').val();
+  alert(chatInput)
+  database.ref().child('chat').set({
+    chatOutput: chatInput
+  })
+  database.ref().on('value', function(snapshot) {
+    $('#chat-output').text(snapshot.child('chat').val().chatOutput);
+  })  
+})
